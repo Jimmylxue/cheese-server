@@ -7,9 +7,11 @@ import {
   ApiBody,
   ApiOperation,
   ApiResponse,
+  ApiTags,
 } from '@nestjs/swagger';
 import { AuthGuard } from 'src/modules/auth/guard/auth.guard';
 
+@ApiTags('微信支付')
 @Controller('wechatpay')
 export class WeChatPaymentController {
   constructor(

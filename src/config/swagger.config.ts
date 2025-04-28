@@ -2,6 +2,7 @@
 import { INestApplication } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AuthModule } from 'src/modules/auth/modules/auth.module';
+import { WxModule } from 'src/modules/wx/wx.module';
 
 export function setupSwagger(app: INestApplication): void {
   // 基础配置
@@ -28,8 +29,8 @@ export function setupSwagger(app: INestApplication): void {
       .setVersion('1.0')
       .build(),
     {
-      include: [AuthModule],
-      ignoreGlobalPrefix: true,
+      include: [AuthModule, WxModule],
+      deepScanRoutes: true,
     },
   );
   SwaggerModule.setup('test/api', app, catDocument);
