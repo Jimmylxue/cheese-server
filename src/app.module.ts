@@ -7,6 +7,7 @@ import { WxModule } from './modules/wx/wx.module';
 import { AuthModule } from './modules/auth/modules/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { RedisModule } from './modules/redis/redis.module';
+import { SystemModule } from './modules/system/system.module';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { RedisModule } from './modules/redis/redis.module';
     RedisModule,
     WxModule,
     AuthModule,
+    SystemModule,
   ],
   controllers: [AppController],
   providers: [AppService],
