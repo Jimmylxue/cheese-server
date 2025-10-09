@@ -4,7 +4,7 @@ import { AppModule } from './app.module';
 import { HttpExceptionFilter } from './common/fillters/http-exception.filter';
 import * as express from 'express';
 import * as path from 'path';
-import { setupSwagger } from './config/swagger.config';
+import { setupSwagger } from './config/swagger/swagger.config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

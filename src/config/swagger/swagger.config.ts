@@ -1,8 +1,7 @@
 // src/config/swagger.config.ts
 import { INestApplication } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { AuthModule } from 'src/modules/auth/modules/auth.module';
-import { WxModule } from 'src/modules/wx/wx.module';
+import { platformConfigs } from './const';
 
 export function setupSwagger(app: INestApplication): void {
   // 基础配置
@@ -19,19 +18,20 @@ export function setupSwagger(app: INestApplication): void {
       'jimmy.cheng@outlook.com',
     );
 
-  // 开发环境才加载模块专属文档
-  // 猫咪文档
-  const catDocument = SwaggerModule.createDocument(
-    app,
-    baseConfig
-      .setTitle('Cats API')
-      .setDescription('Cats related APIs')
-      .setVersion('1.0')
-      .build(),
-    {
-      include: [AuthModule, WxModule],
-      deepScanRoutes: true,
-    },
-  );
-  SwaggerModule.setup('test/api', app, catDocument);
+  // 为每个平台创建独立的文档
+  Object.entries(platformConfigs).forEach(([_, config]) => {
+    const document = SwaggerModule.createDocument(
+      app,
+      baseConfig
+        .setTitle(config.title)
+        .setDescription(config.description)
+        .setVersion('1.0')
+        .build(),
+      {
+        include: config.modules,
+        deepScanRoutes: true,
+      },
+    );
+    SwaggerModule.setup(config.path, app, document);
+  });
 }
