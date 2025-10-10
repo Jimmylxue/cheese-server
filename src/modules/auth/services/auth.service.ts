@@ -49,4 +49,14 @@ export class AuthService {
       );
     }
   }
+
+  async createToken(user) {
+    const payload = {
+      nickname: user.username,
+      userId: user.id,
+      avatar: user.avatar,
+      role: user.role,
+    };
+    return await this.jwtService.signAsync(payload);
+  }
 }

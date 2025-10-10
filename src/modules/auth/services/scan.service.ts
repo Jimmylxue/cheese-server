@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { QrCodeService } from 'src/common/service/qrcode.service';
 import { CheckLoginDto, ScanCodeDto } from '../dto/scan.dto';
 import { RedisService } from 'src/modules/redis/redis.service';
+import { AuthService } from './auth.service';
 
 type TAuth_Code_Type = {
   status: 'pending' | 'scanned' | 'confirmed';
@@ -20,6 +21,7 @@ type TAuth_Code_Type = {
 export class ScanAuthService {
   constructor(
     private usersService: UsersService,
+    private authService: AuthService,
     private jwtService: JwtService,
     private qrCodeService: QrCodeService,
     private readonly redisService: RedisService,
@@ -110,8 +112,7 @@ export class ScanAuthService {
         message: '用户不存在',
       };
     }
-    const payload = { userId: user.id, username: user.username };
-    const access_token = await this.jwtService.signAsync(payload);
+    const access_token = await this.authService.createToken(user);
     await this.redisService.set(qr_id_key, { ...qrSession, access_token }, 90);
     return {
       code: 200,

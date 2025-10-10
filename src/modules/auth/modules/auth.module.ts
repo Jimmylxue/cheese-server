@@ -5,6 +5,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from '../services/constants';
 import { UserModule } from './user.module';
 import { ScanModule } from './scan.module';
+import { MiniProgramModule } from './miniProgram.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { ScanModule } from './scan.module';
     }),
     UserModule,
     ScanModule,
+    MiniProgramModule,
   ],
   controllers: [AuthController],
   providers: [AuthService],

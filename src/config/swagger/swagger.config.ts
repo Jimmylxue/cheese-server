@@ -5,6 +5,7 @@ import { platformConfigs } from './const';
 
 export function setupSwagger(app: INestApplication): void {
   // 为每个平台创建独立的文档
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   Object.entries(platformConfigs).forEach(([_, config]) => {
     const baseConfig = new DocumentBuilder()
       .setTitle('Cheese API 文档')
