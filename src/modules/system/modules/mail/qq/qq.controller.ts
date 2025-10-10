@@ -15,7 +15,7 @@ export class MailController {
   async send(@Body() body: SendMailDto) {
     const { mail } = body;
     if (!isQQMail(mail)) {
-      return { code: 500, result: '邮箱格式不正确 - 不是qq邮箱' };
+      return { code: 500, message: '邮箱格式不正确 - 不是qq邮箱' };
     }
     const code = generateRandomCode();
     const key = `snow-server-mail-verification-code-${mail}`;
@@ -25,9 +25,9 @@ export class MailController {
       code,
     });
     if (status) {
-      return { code: 200, result: '发送成功' };
+      return { code: 200, message: '发送成功' };
     } else {
-      return { code: 500, result: '发送失败，请检查' };
+      return { code: 500, message: '发送失败，请检查' };
     }
   }
 }

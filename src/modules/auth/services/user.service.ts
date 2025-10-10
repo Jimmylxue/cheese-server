@@ -15,6 +15,10 @@ export class UsersService {
     return await this.userRepository.findOne({ where: { phone } });
   }
 
+  async getUserById(id: number) {
+    return await this.userRepository.findOne({ where: { id } });
+  }
+
   async createUser(registerDto: RegisterPhoneDto) {
     const user = new User();
     user.phone = registerDto.phone;

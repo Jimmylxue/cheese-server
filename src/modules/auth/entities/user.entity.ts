@@ -35,7 +35,7 @@ export class User {
   @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
   id: number;
 
-  @Column({ type: 'varchar', name: 'openid' })
+  @Column({ type: 'varchar', name: 'openid', nullable: true })
   openid: string;
 
   @Column('varchar', { name: 'username', length: 45, nullable: true })
