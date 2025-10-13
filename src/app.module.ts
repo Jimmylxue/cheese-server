@@ -8,6 +8,7 @@ import { AuthModule } from './modules/auth/modules/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { RedisModule } from './modules/redis/redis.module';
 import { SystemModule } from './modules/system/system.module';
+import { BizModule } from './modules/biz/biz.module';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { SystemModule } from './modules/system/system.module';
     WxModule,
     AuthModule,
     SystemModule,
+    BizModule,
   ],
   controllers: [AppController],
   providers: [AppService],

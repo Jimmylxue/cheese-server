@@ -1,8 +1,11 @@
+import { UserWord } from 'src/modules/biz/memo-word/entities/userWord.entity';
+import { Tag } from 'src/modules/biz/memo-word/entities/wordTags.entity';
 import { generateRandomCode } from 'src/utils/utils';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -129,4 +132,10 @@ export class User {
 
   @UpdateDateColumn({ type: 'timestamp' })
   updateTime: Date;
+
+  @OneToMany(() => UserWord, (userWord) => userWord.user)
+  userWords: UserWord[];
+
+  @OneToMany(() => Tag, (tag) => tag.user)
+  tags: Tag[];
 }

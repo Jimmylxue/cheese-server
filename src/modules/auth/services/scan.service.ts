@@ -34,7 +34,6 @@ export class ScanAuthService {
     const qrContent = JSON.stringify({
       qr_id: qr_id,
       type: 'login',
-      token,
     });
 
     const qr_svg = await this.qrCodeService.generateQRCodeSVG(qrContent);
@@ -57,6 +56,8 @@ export class ScanAuthService {
       code: 200,
       result: {
         qr_svg,
+        token,
+        qr_id,
       },
     };
   }
@@ -124,17 +125,24 @@ export class ScanAuthService {
     const { qr_id, token } = query;
     const qr_id_key = `scan_auth_${qr_id}`;
     const qrSession = await this.redisService.get<TAuth_Code_Type>(qr_id_key);
+
     if (!qrSession) {
       return {
-        code: 500,
+        code: 502,
         message: '二维码不存在，请刷新',
+        result: {
+          reloadFlag: true,
+        },
       };
     }
 
     if (qrSession.token !== token) {
       return {
-        code: 500,
+        code: 502,
         message: 'token不匹配',
+        result: {
+          reloadFlag: true,
+        },
       };
     }
 
@@ -149,6 +157,7 @@ export class ScanAuthService {
           nickname: qrSession.nickname,
           avatar: qrSession.avatar,
           user,
+          reloadFlag: false,
         },
       };
     } else {
@@ -158,6 +167,7 @@ export class ScanAuthService {
           status: qrSession.status,
           nickname: qrSession.nickname,
           avatar: qrSession.avatar,
+          reloadFlag: false,
         },
       };
     }

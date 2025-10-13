@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsBoolean, IsIn, IsString } from 'class-validator';
+import { IsBoolean, IsIn, IsObject, IsString } from 'class-validator';
 
 export class ScanCodeDto {
   @ApiProperty({ description: '二维码id', example: 'uuid' })
@@ -21,6 +21,17 @@ class GenerateQrCodeResponse {
   @ApiProperty({ description: '二维码图片资源', example: 'qr_svg' })
   @IsString()
   qr_svg: string;
+
+  @ApiProperty({
+    description: '这个token给前端轮询用，与qr_id绑定',
+    example: 'qr_svg',
+  })
+  @IsString()
+  token: string;
+
+  @ApiProperty({ description: '二维码id', example: 'qr_id' })
+  @IsString()
+  qr_id: string;
 }
 
 export class GenerateQrCodeResponseDto {
@@ -86,6 +97,13 @@ class CheckLoginResponse {
   })
   @IsString()
   access_token: string;
+
+  @ApiProperty({
+    description: '扫码授权成功之后的真实用户基础信息',
+    example: '{}',
+  })
+  @IsObject()
+  user: object;
 }
 
 export class CheckLoginResponseDto {
