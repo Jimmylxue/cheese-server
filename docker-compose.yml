@@ -8,6 +8,7 @@ services:
     env_file:
       - .env # ✅ 直接使用你的现有 .env 文件
     environment:
+      # 容器中，你可以通过服务名访问其他服务
       - MYSQL_HOST=mysql # ✅ 覆盖主机地址为 Docker 服务名
       - REDIS_HOST=redis # ✅ 覆盖主机地址为 Docker 服务名
     depends_on:

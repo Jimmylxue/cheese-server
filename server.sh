@@ -1,11 +1,11 @@
 # 切换分支
-# git checkout server-prod
+git checkout server-prod
 
 # # 清空当前工作区
-# git checkout .
+git checkout .
 
 # # 拉取代码
-# git pull --rebase origin server-prod
+git pull --rebase origin server-prod
 
 npm install -g pm2
 
