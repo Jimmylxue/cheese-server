@@ -17,9 +17,9 @@ jobs:
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.PRIVATE_HOST }}
-          username: ubuntu
+          username: root
           password: ${{ secrets.PASSWORD }}
           port: 22
           script: |
             cd /home/ubuntu/server/cheese-server
-            docker-compose up -d
+            docker-compose up -d --build
