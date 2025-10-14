@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - '9999:9999'
+    env_file:
+      - .env # ✅ 直接使用你的现有 .env 文件
+    environment:
+      - MYSQL_HOST=mysql # ✅ 覆盖主机地址为 Docker 服务名
+      - REDIS_HOST=redis # ✅ 覆盖主机地址为 Docker 服务名
+    depends_on:
+      - mysql
+      - redis
+    restart: unless-stopped
+
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD} # ✅ 引用 .env 中的变量
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    ports:
+      - '3306:3306'
+    volumes:
+      - mysql_data:/var/lib/mysql
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - '6379:6379'
+    command: redis-server --requirepass ${REDIS_PASSWORD} # ✅ 引用 .env 中的变量
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+
+volumes:
+  mysql_data:
+  redis_data:
