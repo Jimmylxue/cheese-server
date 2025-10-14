@@ -1,13 +1,13 @@
 # 切换分支
-git checkout server-prod
+# git checkout server-prod
 
-# # 清空当前工作区
-git checkout .
+# # # 清空当前工作区
+# git checkout .
 
-# # 拉取代码
-git pull --rebase origin server-prod
+# # # 拉取代码
+# git pull --rebase origin server-prod
 
-npm install -g pm2
+# npm install -g pm2
 
 # 安装依赖
 pnpm install

@@ -21,5 +21,6 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           port: 22
           script: |
-            cd /home/ubuntu/server/cheese-server
+            cd /home/ubuntu/server/cheese/cheese-server
+            git checkout server-prod
             sudo docker-compose up -d --build
