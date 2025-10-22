@@ -7,7 +7,7 @@
 # # # 拉取代码
 # git pull --rebase origin server-prod
 
-# npm install -g pm2
+npm install -g pm2
 
 # 安装依赖
 pnpm install
