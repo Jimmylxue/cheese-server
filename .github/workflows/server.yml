@@ -23,4 +23,6 @@ jobs:
           script: |
             cd /home/ubuntu/server/cheese/cheese-server
             git checkout server-prod
+            git checkout .
+            git pull --rebase origin server-prod
             sudo docker-compose up -d --build
