@@ -9,6 +9,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { RedisModule } from './modules/redis/redis.module';
 import { SystemModule } from './modules/system/system.module';
 import { BizModule } from './modules/biz/biz.module';
+import { ThirdPlatformModule } from './modules/thirdPlatform/thirdPlatform.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { BizModule } from './modules/biz/biz.module';
     WxModule,
     AuthModule,
     SystemModule,
+    ThirdPlatformModule,
     BizModule,
   ],
   controllers: [AppController],

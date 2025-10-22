@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { FanYiDto } from '../dto/translate.dto';
+import { FanYiDto } from './dto/translate.dto';
 import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
 import { MD5 } from 'src/utils/md5';

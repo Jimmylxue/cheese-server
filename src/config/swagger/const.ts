@@ -1,7 +1,7 @@
 import { AuthModule } from 'src/modules/auth/modules/auth.module';
 import { ScanModule } from 'src/modules/auth/modules/scan.module';
 import { MemoWordModule } from 'src/modules/biz/memo-word/memo.module';
-import { TranslateModule } from 'src/modules/biz/memo-word/translate/translate.module';
+import { ThirdPlatformModule } from 'src/modules/thirdPlatform/thirdPlatform.module';
 import { WxModule } from 'src/modules/wx/wx.module';
 
 /**
@@ -39,9 +39,9 @@ export const platformConfigs = {
     path: 'platform/memo',
   },
   translate: {
-    title: 'Memo Platform API',
-    description: '翻译 接口',
-    modules: [TranslateModule],
-    path: 'platform/translate',
+    title: 'Third Platform API',
+    description: '第三方平台 接口',
+    modules: [ThirdPlatformModule],
+    path: 'platform/third',
   },
 };

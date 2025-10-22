@@ -1,21 +1,8 @@
-import {
-  Body,
-  Controller,
-  HttpCode,
-  HttpStatus,
-  Post,
-  // UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 
-// import { AuthGuard } from 'src/modules/auth/guard/auth.guard';
-import {
-  // ApiBearerAuth,
-  ApiOperation,
-  ApiResponse,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { TranslateService } from './translate.service';
-import { FanYiDto, TranslateResponseDto } from '../dto/translate.dto';
+import { FanYiDto, TranslateResponseDto } from './dto/translate.dto';
 
 @ApiTags('翻译模块')
 @Controller('translate')
