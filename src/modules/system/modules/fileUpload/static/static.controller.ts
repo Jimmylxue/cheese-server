@@ -41,9 +41,8 @@ export class StaticController {
   @Post('/uploadfile')
   @UseInterceptors(FileInterceptor('file'))
   async getBaseInfos(@UploadedFile() file) {
-    const originPath = resolve(process.cwd(), 'public/storage');
-    const baseUrl =
-      this.configService.get<string>('STATIC_BASE_URL') + '/storage';
+    const originPath = resolve(process.cwd(), 'static');
+    const baseUrl = this.configService.get<string>('STATIC_BASE_URL');
 
     const hasOriginDir = await hasDir(originPath);
     if (!hasOriginDir) {
