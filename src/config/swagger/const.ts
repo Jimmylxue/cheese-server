@@ -1,6 +1,8 @@
 import { AuthModule } from 'src/modules/auth/modules/auth.module';
 import { ScanModule } from 'src/modules/auth/modules/scan.module';
 import { MemoWordModule } from 'src/modules/biz/memo-word/memo.module';
+import { FileUploadModule } from 'src/modules/system/modules/fileUpload/fileUpload.module';
+import { SystemModule } from 'src/modules/system/system.module';
 import { ThirdPlatformModule } from 'src/modules/thirdPlatform/thirdPlatform.module';
 import { WxModule } from 'src/modules/wx/wx.module';
 
@@ -11,7 +13,7 @@ export const platformConfigs = {
   full: {
     title: 'Full API',
     description: '所有接口文档',
-    modules: [AuthModule, ScanModule, WxModule],
+    modules: [AuthModule, ScanModule, WxModule, ThirdPlatformModule],
     path: 'platform/all',
   },
   auth: {
@@ -43,5 +45,11 @@ export const platformConfigs = {
     description: '第三方平台 接口',
     modules: [ThirdPlatformModule],
     path: 'platform/third',
+  },
+  fileupload: {
+    title: 'File Upload API',
+    description: '文件上传 接口',
+    modules: [FileUploadModule],
+    path: 'platform/fileupload',
   },
 };

@@ -1,5 +1,7 @@
 import {
   Controller,
+  HttpCode,
+  HttpStatus,
   Post,
   UploadedFile,
   UseInterceptors,
@@ -8,19 +10,40 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { resolve } from 'path';
 import { ConfigService } from '@nestjs/config';
 import { hasDir, mkADir, writeAFile } from 'src/utils/file';
+import {
+  ApiBody,
+  ApiConsumes,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
+import {
+  FileUploadDto,
+  UploadSuccessResponseDto,
+} from '../../common/dto/file.dto';
 
+@ApiTags('Static 本地图片上传')
 @Controller('static')
 export class StaticController {
   constructor(private readonly configService: ConfigService) {}
 
-  /**
-   * 上传是上传到 dist 下的文件夹
-   */
+  @ApiOperation({ summary: '上传图片' })
+  @ApiResponse({
+    description: '上传返回内容',
+    type: UploadSuccessResponseDto,
+  })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    description: '选择要上传的文件',
+    type: FileUploadDto,
+  })
+  @HttpCode(HttpStatus.OK)
   @Post('/uploadfile')
   @UseInterceptors(FileInterceptor('file'))
   async getBaseInfos(@UploadedFile() file) {
-    const originPath = resolve(process.cwd(), 'public');
-    const baseUrl = this.configService.get<string>('STATIC_BASE_URL');
+    const originPath = resolve(process.cwd(), 'public/storage');
+    const baseUrl =
+      this.configService.get<string>('STATIC_BASE_URL') + '/storage';
 
     const hasOriginDir = await hasDir(originPath);
     if (!hasOriginDir) {
