@@ -3,7 +3,7 @@
 /node_modules
 /build
 
-/static/*
+/public/*
 
 # Logs
 logs
