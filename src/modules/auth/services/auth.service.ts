@@ -4,12 +4,14 @@ import { ErrorFactory } from 'src/common/exceptions/error.factory';
 import { JwtService } from '@nestjs/jwt';
 import { LoginPhoneDto, RegisterPhoneDto } from '../dto/login.dto';
 import { UsersService } from './user.service';
+import { RedisService } from 'src/modules/redis/redis.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private usersService: UsersService,
     private jwtService: JwtService,
+    private readonly redisService: RedisService,
   ) {}
 
   async signIn(signInDto: LoginPhoneDto): Promise<{ access_token: string }> {
@@ -58,5 +60,15 @@ export class AuthService {
       role: user.role,
     };
     return await this.jwtService.signAsync(payload);
+  }
+
+  // 发送验证码
+  async sendVerificationCode(phone: string): Promise<boolean> {
+    const code = Math.floor(100000 + Math.random() * 900000).toString();
+    // 将验证码存储在 Redis 中，设置过期时间为 5 分钟
+    await this.redisService.set(`verification_code_${phone}`, code, 300);
+    // 这里你可以集成第三方短信服务来发送验证码
+    console.log(`发送验证码 ${code} 到手机号 ${phone}`);
+    return true;
   }
 }

@@ -1,7 +1,7 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import {
   LoginByMiniProgram,
-  LoginByMiniProgramResponseDto,
+  LoginSuccessResponseDto,
 } from '../dto/miniProgram.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { MiniProgramService } from '../services/miniProgram.service';
@@ -14,7 +14,7 @@ export class MiniProgramController {
   @ApiOperation({ summary: '微信小程序登录' })
   @ApiResponse({
     description: '微信小程序登录返回',
-    type: LoginByMiniProgramResponseDto,
+    type: LoginSuccessResponseDto,
   })
   @Post('/login')
   async loginMiniProgram(@Body() body: LoginByMiniProgram) {

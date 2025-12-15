@@ -8,5 +8,4 @@ export class SendMailDto {
 
 export type TSendVerificationParams = {
   to: string;
-  code: string;
 };

@@ -3,6 +3,7 @@ import { User } from '../entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { RegisterMiniProgramDto, RegisterPhoneDto } from '../dto/login.dto';
+import { RegisterByMailDto } from '../dto/mail.dto';
 
 @Injectable()
 export class UsersService {
@@ -23,6 +24,10 @@ export class UsersService {
     return await this.userRepository.findOne({ where: { openid } });
   }
 
+  async getUserByMail(mail: string) {
+    return await this.userRepository.findOne({ where: { mail } });
+  }
+
   async createUser(registerDto: RegisterPhoneDto) {
     const user = new User();
     user.phone = registerDto.phone;
@@ -35,6 +40,14 @@ export class UsersService {
     user.nickname = registerDto.nickname;
     user.avatar = registerDto.avatar;
     user.openid = registerDto.openid;
+    return await this.userRepository.save(user);
+  }
+
+  async createUserByMail(registerDto: RegisterByMailDto) {
+    const user = new User();
+    for (const [key, value] of Object.entries(registerDto)) {
+      user[key] = value;
+    }
     return await this.userRepository.save(user);
   }
 }

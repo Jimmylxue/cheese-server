@@ -1,21 +1,33 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import nodemailer from 'nodemailer';
 import { MailTemplateService } from './template.service';
-import { TSendVerificationParams } from './qq.dto';
+import { RedisService } from 'src/modules/redis/redis.service';
+import { generateRandomCode } from 'src/utils';
+import { keyMap, KeyType } from './biz';
+const nodemailer = require('nodemailer');
 
 @Injectable()
 export class QQNodeMailerService {
   constructor(
     private readonly configService: ConfigService,
     private readonly mailTemplateService: MailTemplateService,
+    private readonly redisService: RedisService,
   ) {}
 
   /**
    * 发送验证码
    *  会将码保存至redis
    */
-  async sendVerificationCode(params: TSendVerificationParams) {
+  async sendVerificationCode(
+    params: {
+      to: string;
+    },
+    type: KeyType,
+  ) {
+    const code = generateRandomCode();
+    const key = `${keyMap[type]}-${params.to}`;
+    await this.redisService.set(key, code, 600); // 600S 后自动删除
+
     const appName = this.configService.get<string>('APP_NAME');
     const { to } = params;
     return new Promise((resolve) => {
@@ -27,7 +39,13 @@ export class QQNodeMailerService {
       if (!user || !password || !to) {
         return;
       }
-      const html = this.mailTemplateService.getVerificationTemplate(params);
+      const html = this.mailTemplateService.getVerificationTemplate(
+        {
+          ...params,
+        },
+        code,
+      );
+
       nodemailer
         .createTransport({
           host, // 设置服务

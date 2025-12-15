@@ -2,6 +2,7 @@
 import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import Redis from 'ioredis';
+import { REGISTER_VERIFICATION_CODE_KEY } from '../system/modules/mail/qq/biz';
 
 @Injectable()
 export class RedisService implements OnModuleInit, OnModuleDestroy {
@@ -52,4 +53,11 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
   }
 
   // 其他 Redis 操作方法...
+
+  async getMailVerificationCode(mail: string) {
+    return await this.get(`${REGISTER_VERIFICATION_CODE_KEY}-${mail}`);
+  }
+  async delMailVerificationCode(mail: string) {
+    return await this.del(`${REGISTER_VERIFICATION_CODE_KEY}-${mail}`);
+  }
 }

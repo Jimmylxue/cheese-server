@@ -14,7 +14,7 @@ import { LoginPhoneDto, RegisterPhoneDto } from '../dto/login.dto';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Request as ExpressRequest } from 'express';
 
-@ApiTags('认证')
+@ApiTags('手机登录')
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}

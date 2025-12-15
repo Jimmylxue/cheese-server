@@ -6,7 +6,7 @@ import { TSendVerificationParams } from './qq.dto';
 export class MailTemplateService {
   constructor(private readonly configService: ConfigService) {}
 
-  getVerificationTemplate({ to, code }: TSendVerificationParams) {
+  getVerificationTemplate({ to }: TSendVerificationParams, code: string) {
     const AppName = this.configService.get<string>('APP_NAME');
     return `<!DOCTYPE html>
   <html>

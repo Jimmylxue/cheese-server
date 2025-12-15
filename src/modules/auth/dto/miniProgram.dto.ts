@@ -27,8 +27,8 @@ export class LoginByMiniProgram {
 
 class LoginByMiniProgramResponse {
   @ApiProperty({
-    description: '头像',
-    example: 'https://avatars.githubusercontent.com/u/65758455?v=4',
+    description: 'token',
+    example: 'xxxxx',
   })
   @IsOptional()
   @IsString()
@@ -42,7 +42,7 @@ class LoginByMiniProgramResponse {
   user: UserDto;
 }
 
-export class LoginByMiniProgramResponseDto {
+export class LoginSuccessResponseDto {
   @ApiProperty({
     description: '业务状态码',
     example: 200,

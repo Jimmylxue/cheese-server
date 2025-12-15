@@ -6,6 +6,7 @@ import { jwtConstants } from '../services/constants';
 import { UserModule } from './user.module';
 import { ScanModule } from './scan.module';
 import { MiniProgramModule } from './miniProgram.module';
+import { MailAuthModule } from './mail.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { MiniProgramModule } from './miniProgram.module';
     UserModule,
     ScanModule,
     MiniProgramModule,
+    MailAuthModule,
   ],
   controllers: [AuthController],
   providers: [AuthService],
