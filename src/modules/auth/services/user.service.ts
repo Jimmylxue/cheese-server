@@ -50,4 +50,11 @@ export class UsersService {
     }
     return await this.userRepository.save(user);
   }
+
+  async findAllId(): Promise<number[]> {
+    const ids = await this.userRepository.find({
+      select: ['id'],
+    });
+    return ids.map((item) => item.id);
+  }
 }

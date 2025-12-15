@@ -1,8 +1,9 @@
 import { AuthModule } from 'src/modules/auth/modules/auth.module';
 import { ScanModule } from 'src/modules/auth/modules/scan.module';
 import { MemoWordModule } from 'src/modules/biz/memo-word/memo.module';
+import { TodoListModule } from 'src/modules/biz/todolist/todolist.module';
 import { FileUploadModule } from 'src/modules/system/modules/fileUpload/fileUpload.module';
-import { SystemModule } from 'src/modules/system/system.module';
+import { SiteLetterModule } from 'src/modules/system/modules/siteLetter/siteLetter.module';
 import { ThirdPlatformModule } from 'src/modules/thirdPlatform/thirdPlatform.module';
 import { WxModule } from 'src/modules/wx/wx.module';
 
@@ -51,5 +52,17 @@ export const platformConfigs = {
     description: '文件上传 接口',
     modules: [FileUploadModule],
     path: 'platform/fileupload',
+  },
+  siteLetter: {
+    title: 'Site Letter API',
+    description: '站内信 接口',
+    modules: [SiteLetterModule],
+    path: 'platform/siteLetter',
+  },
+  todolist: {
+    title: 'To Do List API',
+    description: '待办事项 接口',
+    modules: [TodoListModule],
+    path: 'platform/todolist',
   },
 };
