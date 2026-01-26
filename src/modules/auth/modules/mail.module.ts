@@ -4,10 +4,9 @@ import { AuthService } from '../services/auth.service';
 import { UserModule } from './user.module';
 import { MailAuthController } from '../controller/mail.controller';
 import { MailAuthService } from '../services/mail.service';
-import { MailModule } from 'src/modules/system/modules/mail/qq/qq.module';
 
 @Module({
-  imports: [HttpModule, UserModule, MailModule],
+  imports: [HttpModule, UserModule],
   controllers: [MailAuthController],
   providers: [AuthService, MailAuthService],
 })
