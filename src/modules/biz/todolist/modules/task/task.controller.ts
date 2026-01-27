@@ -15,6 +15,7 @@ import {
   UpdateTaskParams,
   UpdateTaskStatusParams,
   SearchParams,
+  TaskTimeFilterType,
 } from './dto/task.dto';
 import { TaskService } from './task.service';
 import { AuthGuard } from 'src/modules/auth/guard/auth.guard';
@@ -54,6 +55,7 @@ export class TaskController {
       status,
       typeId,
       sort = 'DESC',
+      filterType = TaskTimeFilterType.任务创建时间,
     } = req;
     const { user } = auth;
     const userId = user.userId;
@@ -66,6 +68,7 @@ export class TaskController {
       status,
       typeId,
       sort,
+      filterType,
     };
     const { result, total } = await this.taskService.getUserTask(params);
     return {

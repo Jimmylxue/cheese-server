@@ -1,4 +1,11 @@
-import { IsIn, IsInt, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import {
+  IsEnum,
+  IsIn,
+  IsInt,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 export class UserTaskBody {
   @IsOptional()
@@ -8,6 +15,11 @@ export class UserTaskBody {
   @IsNotEmpty({ message: 'userId不能为空' })
   @IsInt({ message: 'userId-参数类型错误' })
   userId: number;
+}
+
+export enum TaskTimeFilterType {
+  任务创建时间 = 1,
+  任务预期时间,
 }
 
 export class UserTaskParams {
@@ -38,6 +50,10 @@ export class UserTaskParams {
   @IsOptional()
   @IsIn(['ASC', 'DESC'])
   sort: string;
+
+  @IsOptional()
+  @IsEnum(TaskTimeFilterType, { message: 'filterType-参数类型错误' })
+  filterType: TaskTimeFilterType;
 }
 
 export class AddTaskParams {

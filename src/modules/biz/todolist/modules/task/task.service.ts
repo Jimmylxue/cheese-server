@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Task } from '../../entities/task.entity';
 import { TaskType } from '../../entities/taskType.entity';
+import { TaskTimeFilterType } from './dto/task.dto';
 
 @Injectable()
 export class TaskService {
@@ -12,8 +13,17 @@ export class TaskService {
   ) {}
 
   async getUserTask(params: any) {
-    const { userId, page, pageSize, startTime, endTime, status, typeId, sort } =
-      params;
+    const {
+      userId,
+      page,
+      pageSize,
+      startTime,
+      endTime,
+      status,
+      typeId,
+      sort,
+      filterType,
+    } = params;
 
     // 分页操作
     const qb = this.taskRepository.createQueryBuilder('task');
@@ -28,8 +38,18 @@ export class TaskService {
       .orderBy('task.taskId', sort)
       // .leftJoinAndSelect(TaskType, 'taskType', 'task.typeId = taskType.typeId') // 表关联
       .where('task.userId = :userId', { userId })
-      .andWhere('task.createTime >= :startTime', { startTime })
-      .andWhere('task.createTime <= :endTime', { endTime })
+      .andWhere(
+        filterType === TaskTimeFilterType.任务创建时间
+          ? 'task.createTime >= :startTime'
+          : 'task.expectTime >= :startTime',
+        { startTime },
+      )
+      .andWhere(
+        filterType === TaskTimeFilterType.任务创建时间
+          ? 'task.createTime <= :endTime'
+          : 'task.expectTime <= :endTime',
+        { endTime },
+      )
       .andWhere('task.status LIKE :status', {
         status: status === undefined ? '%' : status,
       })
