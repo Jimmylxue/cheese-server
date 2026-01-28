@@ -1,5 +1,6 @@
 import { AuthModule } from 'src/modules/auth/modules/auth.module';
 import { ScanModule } from 'src/modules/auth/modules/scan.module';
+import { ImgCloudModule } from 'src/modules/biz/imgCloud/imgCloud.module';
 import { MemoWordModule } from 'src/modules/biz/memo-word/memo.module';
 import { TodoListModule } from 'src/modules/biz/todolist/todolist.module';
 import { FileUploadModule } from 'src/modules/system/modules/fileUpload/fileUpload.module';
@@ -64,5 +65,11 @@ export const platformConfigs = {
     description: '待办事项 接口',
     modules: [TodoListModule],
     path: 'platform/todolist',
+  },
+  imgCloud: {
+    title: 'Img Cloud API',
+    description: '图床 接口',
+    modules: [ImgCloudModule],
+    path: 'platform/imgCloud',
   },
 };
