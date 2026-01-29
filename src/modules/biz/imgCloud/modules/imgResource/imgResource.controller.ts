@@ -80,7 +80,7 @@ export class ImgResourceController {
     @Request() req,
   ) {
     const folderId = dto.folderId ? Number(dto.folderId) : undefined;
-    return this.imgResourceService.upload(file, req.user.sub, folderId);
+    return this.imgResourceService.upload(file, req.user.userId, folderId);
   }
 
   @Get('download/:id')
@@ -132,6 +132,6 @@ export class ImgResourceController {
   @UseInterceptors(TransformInterceptor)
   @ApiCommonResponse()
   async delete(@Body() dto: DeleteResourceDto, @Request() req) {
-    return this.imgResourceService.delete(dto.id, req.user.sub);
+    return this.imgResourceService.delete(dto.id, req.user.userId);
   }
 }

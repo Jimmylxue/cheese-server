@@ -1,24 +1,32 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-
+import * as upyun from 'upyun';
 @Injectable()
 export class UpyonService {
   constructor(private readonly configService: ConfigService) {}
 
-  async upload(file: any): Promise<{ success: boolean; url?: string; message?: string }> {
-    // This is a recovered file. Please review the implementation.
-    // Assuming a successful upload for now to satisfy the interface.
-    // You may need to restore the actual Upyun SDK integration logic here.
-    
-    console.warn('UpyonService.upload is using a placeholder implementation.');
-    
-    // Simulating a remote URL
-    const filename = `${Date.now()}_${file.originalname}`;
-    const mockUrl = `https://mock-storage.com/${filename}`;
+  async upload(
+    file: any,
+  ): Promise<{ success: boolean; url?: string; message?: string }> {
+    const service = new upyun.Service(
+      this.configService.get('UP_SERVICE_NAME'),
+      this.configService.get('UP_OPERATOR_NAME'),
+      this.configService.get('UP_PASSWORD'),
+    );
+    const client = new upyun.Client(service);
+    const fileName = Date.now() + file.originalname;
+    const res = await client.putFile('upload/' + fileName, file.buffer);
+    console.log('res', res);
+    if (res) {
+      return {
+        success: true,
+        url: `https://image.jimmyxuexue.top/upload/${fileName}`,
+      };
+    }
 
     return {
-      success: true,
-      url: mockUrl,
+      success: false,
+      message: 'Upload failed',
     };
   }
 }

@@ -18,6 +18,7 @@ import { TransformInterceptor } from 'src/common/interceptors/transform.intercep
 import { ApiCommonResponse } from 'src/common/decorators/api-response.decorator';
 import { UpdateFolderDto } from '../../dto/update-folder.dto';
 import { DeleteFolderDto } from '../../dto/delete-folder.dto';
+import { FolderTreeResponseDto } from '../../dto/folder-tree-response.dto';
 
 @ApiTags('Image Folder')
 @ApiBearerAuth()
@@ -32,7 +33,11 @@ export class ImgFolderController {
   @UseInterceptors(TransformInterceptor)
   @ApiCommonResponse(ImgFolderResponseDto)
   async create(@Body() dto: CreateFolderDto, @Request() req) {
-    return this.imgFolderService.create(dto.name, req.user.sub, dto.parentId);
+    return this.imgFolderService.create(
+      dto.name,
+      req.user.userId,
+      dto.parentId,
+    );
   }
 
   @Get('list')
@@ -42,7 +47,16 @@ export class ImgFolderController {
   @ApiCommonResponse(ImgFolderResponseDto, true)
   async list(@Query() dto: ListDto, @Request() req) {
     const folderId = dto.folderId ? Number(dto.folderId) : undefined;
-    return this.imgFolderService.list(req.user.sub, folderId);
+    return this.imgFolderService.list(req.user.userId, folderId);
+  }
+
+  @Get('tree')
+  @ApiOperation({ summary: 'Get Folder Tree Structure' })
+  @ApiBearerAuth('access-token')
+  @UseInterceptors(TransformInterceptor)
+  @ApiCommonResponse(FolderTreeResponseDto, true)
+  async getTree(@Request() req) {
+    return this.imgFolderService.getTree(req.user.userId);
   }
 
   @Post('update')

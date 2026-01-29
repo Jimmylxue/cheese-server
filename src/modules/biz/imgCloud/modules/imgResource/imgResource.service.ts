@@ -15,7 +15,6 @@ export class ImgResourceService {
   constructor(
     @InjectRepository(ImgResource)
     private resourceRepository: Repository<ImgResource>,
-    private configService: ConfigService,
     private upyonService: UpyonService,
   ) {}
 

@@ -28,6 +28,6 @@ export class ImgCloudController {
   @ApiCommonResponse(ImgCloudListResponseDto)
   async listAll(@Query() dto: ListDto, @Request() req) {
     const folderId = dto.folderId ? Number(dto.folderId) : undefined;
-    return this.imgCloudService.list(req.user.sub, folderId);
+    return this.imgCloudService.list(req.user.userId, folderId);
   }
 }

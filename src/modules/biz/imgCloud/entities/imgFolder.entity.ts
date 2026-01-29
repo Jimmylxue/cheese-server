@@ -20,8 +20,11 @@ export class ImgFolder {
   name: string;
 
   @ManyToOne(() => User)
-  @JoinColumn({ name: 'user_id' })
+  @JoinColumn({ name: 'userId' })
   user: User;
+
+  @Column({ name: 'userId' })
+  userId: number;
 
   @ManyToOne(() => ImgFolder, (folder) => folder.children, {
     onDelete: 'CASCADE',
