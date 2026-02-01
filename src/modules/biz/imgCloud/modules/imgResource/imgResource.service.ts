@@ -15,6 +15,7 @@ export class ImgResourceService {
   constructor(
     @InjectRepository(ImgResource)
     private resourceRepository: Repository<ImgResource>,
+    private configService: ConfigService,
     private upyonService: UpyonService,
   ) {}
 
@@ -27,6 +28,8 @@ export class ImgResourceService {
       mimetype: entity.mimetype || '',
       folderId: entity.folder ? entity.folder.id : null,
       createdAt: entity.createdAt,
+      isDelete: entity.isDelete,
+      isFavorite: entity.isFavorite,
     };
   }
 
@@ -34,7 +37,10 @@ export class ImgResourceService {
     userId: number,
     folderId?: number,
   ): Promise<ImgResourceResponseDto[]> {
-    const whereImage: any = { user: { id: userId } };
+    const whereImage: any = {
+      user: { id: userId },
+      isDelete: false,
+    };
 
     if (folderId) {
       whereImage.folder = { id: folderId };
@@ -97,7 +103,7 @@ export class ImgResourceService {
     folderId?: number | null,
   ): Promise<ImgResourceResponseDto> {
     const resource = await this.resourceRepository.findOne({
-      where: { id, user: { id: userId } },
+      where: { id, user: { id: userId }, isDelete: false },
       relations: ['folder'],
     });
 
@@ -128,6 +134,43 @@ export class ImgResourceService {
     if (!resource) {
       throw new NotFoundException('Image not found');
     }
-    await this.resourceRepository.remove(resource);
+
+    resource.isDelete = true;
+    resource.deletedAt = new Date();
+    await this.resourceRepository.save(resource);
+  }
+
+  async toggleFavorite(
+    id: number,
+    userId: number,
+  ): Promise<ImgResourceResponseDto> {
+    const resource = await this.resourceRepository.findOne({
+      where: { id, user: { id: userId }, isDelete: false },
+      relations: ['folder'],
+    });
+
+    if (!resource) {
+      throw new NotFoundException('Image not found');
+    }
+
+    resource.isFavorite = !resource.isFavorite;
+    const saved = await this.resourceRepository.save(resource);
+    return this.toDto(saved);
+  }
+
+  async listFavorites(userId: number): Promise<ImgResourceResponseDto[]> {
+    const resources = await this.resourceRepository.find({
+      where: { user: { id: userId }, isFavorite: true, isDelete: false },
+      relations: ['folder'],
+    });
+    return resources.map((res) => this.toDto(res));
+  }
+
+  async listTrash(userId: number): Promise<ImgResourceResponseDto[]> {
+    const resources = await this.resourceRepository.find({
+      where: { user: { id: userId }, isDelete: true },
+      relations: ['folder'],
+    });
+    return resources.map((res) => this.toDto(res));
   }
 }

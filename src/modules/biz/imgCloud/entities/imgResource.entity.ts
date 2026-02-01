@@ -42,4 +42,13 @@ export class ImgResource {
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
+
+  @Column({ name: 'is_delete', default: false })
+  isDelete: boolean;
+
+  @Column({ name: 'deleted_at', nullable: true, type: 'timestamp' })
+  deletedAt: Date | null;
+
+  @Column({ name: 'is_favorite', default: false })
+  isFavorite: boolean;
 }

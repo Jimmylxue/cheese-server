@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, IsNull } from 'typeorm';
 import { ImgFolder } from '../../entities/imgFolder.entity';
+import { ImgResource } from '../../entities/imgResource.entity';
 import { ImgFolderResponseDto } from '../../dto/folder-response.dto';
 import { FolderTreeResponseDto } from '../../dto/folder-tree-response.dto';
 
@@ -10,6 +11,8 @@ export class ImgFolderService {
   constructor(
     @InjectRepository(ImgFolder)
     private folderRepository: Repository<ImgFolder>,
+    @InjectRepository(ImgResource)
+    private resourceRepository: Repository<ImgResource>,
   ) {}
 
   private toDto(entity: ImgFolder): ImgFolderResponseDto {
@@ -41,7 +44,6 @@ export class ImgFolderService {
     const folder = this.folderRepository.create({
       name,
       user: { id: userId },
-      userId,
       parent: parentId ? { id: parentId } : undefined,
     });
     const saved = await this.folderRepository.save(folder);
@@ -58,7 +60,9 @@ export class ImgFolderService {
     userId: number,
     parentId?: number,
   ): Promise<ImgFolderResponseDto[]> {
-    const whereFolder: any = { user: { id: userId } };
+    const whereFolder: any = {
+      user: { id: userId },
+    };
 
     if (parentId) {
       whereFolder.parent = { id: parentId };
@@ -66,10 +70,18 @@ export class ImgFolderService {
       whereFolder.parent = IsNull();
     }
 
+    console.log('ImgFolderService.list query params:', { userId, parentId });
+    console.log(
+      'ImgFolderService.list where conditions:',
+      JSON.stringify(whereFolder),
+    );
+
     const folders = await this.folderRepository.find({
       where: whereFolder,
       relations: ['parent'],
     });
+
+    console.log(`ImgFolderService.list found ${folders.length} folders`);
 
     return folders.map((folder) => this.toDto(folder));
   }
@@ -152,6 +164,36 @@ export class ImgFolderService {
       throw new NotFoundException('Folder not found');
     }
 
+    await this.deleteRecursive(folder);
+  }
+
+  private async deleteRecursive(folder: ImgFolder) {
+    // 1. Find all children
+    const children = await this.folderRepository.find({
+      where: { parent: { id: folder.id } },
+    });
+
+    // 2. Recursively delete children
+    for (const child of children) {
+      await this.deleteRecursive(child);
+    }
+
+    // 3. Soft delete all images in this folder before deleting the folder
+    const images = await this.resourceRepository.find({
+      where: { folder: { id: folder.id }, isDelete: false },
+    });
+
+    for (const image of images) {
+      image.isDelete = true;
+      image.deletedAt = new Date();
+      // Keep folder reference if you want to know where it came from,
+      // but if folder is hard deleted, DB might set it to NULL.
+      // If we want to keep it in "Trash" effectively, we rely on isDelete=true on the image.
+      // Since folder is being hard deleted, we accept folder_id will become NULL.
+      await this.resourceRepository.save(image);
+    }
+
+    // 4. Hard delete the folder
     await this.folderRepository.remove(folder);
   }
 }

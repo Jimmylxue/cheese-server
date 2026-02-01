@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ImgFolderService } from './modules/imgFolder/imgFolder.service';
 import { ImgResourceService } from './modules/imgResource/imgResource.service';
 import { ImgCloudListResponseDto } from './dto/cloud-list-response.dto';
+import { ImgResourceResponseDto } from './dto/resource-response.dto';
 
 @Injectable()
 export class ImgCloudService {
@@ -23,5 +24,9 @@ export class ImgCloudService {
       folders,
       images,
     };
+  }
+
+  async listTrash(userId: number): Promise<ImgResourceResponseDto[]> {
+    return this.imgResourceService.listTrash(userId);
   }
 }

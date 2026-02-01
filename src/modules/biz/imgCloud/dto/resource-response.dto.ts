@@ -32,4 +32,10 @@ export class ImgResourceResponseDto {
     example: '2023-01-01T00:00:00Z',
   })
   createdAt: Date;
+
+  @ApiProperty({ description: 'Is Deleted', example: false })
+  isDelete: boolean;
+
+  @ApiProperty({ description: 'Is Favorite', example: false })
+  isFavorite: boolean;
 }

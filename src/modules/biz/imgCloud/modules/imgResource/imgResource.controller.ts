@@ -32,6 +32,7 @@ import { ApiCommonResponse } from 'src/common/decorators/api-response.decorator'
 import { ImgResourceResponseDto } from '../../dto/resource-response.dto';
 import { UpdateResourceDto } from '../../dto/update-resource.dto';
 import { DeleteResourceDto } from '../../dto/delete-resource.dto';
+import { FavoriteSourceDto } from '../../dto/favorite-folder.dto';
 
 @ApiTags('Image Resource')
 @ApiBearerAuth()
@@ -108,30 +109,49 @@ export class ImgResourceController {
 
       response.data.pipe(res);
     } catch (error) {
-      throw new NotFoundException('File not found on remote server');
+      console.error('Download proxy error:', error);
+      throw new NotFoundException('Could not download file from remote source');
     }
   }
 
   @Post('update')
-  @ApiOperation({ summary: 'Update Image Info' })
+  @ApiOperation({ summary: 'Update Resource' })
   @ApiBearerAuth('access-token')
   @UseInterceptors(TransformInterceptor)
   @ApiCommonResponse(ImgResourceResponseDto)
   async update(@Body() dto: UpdateResourceDto, @Request() req) {
     return this.imgResourceService.update(
       dto.id,
-      req.user.sub,
+      req.user.userId,
       dto.filename,
       dto.folderId,
     );
   }
 
   @Post('delete')
-  @ApiOperation({ summary: 'Delete Image' })
+  @ApiOperation({ summary: 'Delete Resource' })
   @ApiBearerAuth('access-token')
   @UseInterceptors(TransformInterceptor)
   @ApiCommonResponse()
   async delete(@Body() dto: DeleteResourceDto, @Request() req) {
     return this.imgResourceService.delete(dto.id, req.user.userId);
+  }
+
+  @Post('favorite')
+  @ApiOperation({ summary: 'Toggle Favorite' })
+  @ApiBearerAuth('access-token')
+  @UseInterceptors(TransformInterceptor)
+  @ApiCommonResponse(ImgResourceResponseDto)
+  async toggleFavorite(@Body() dto: FavoriteSourceDto, @Request() req) {
+    return this.imgResourceService.toggleFavorite(dto.id, req.user.userId);
+  }
+
+  @Get('favorites')
+  @ApiOperation({ summary: 'List Favorites' })
+  @ApiBearerAuth('access-token')
+  @UseInterceptors(TransformInterceptor)
+  @ApiCommonResponse(ImgResourceResponseDto, true)
+  async listFavorites(@Request() req) {
+    return this.imgResourceService.listFavorites(req.user.userId);
   }
 }
