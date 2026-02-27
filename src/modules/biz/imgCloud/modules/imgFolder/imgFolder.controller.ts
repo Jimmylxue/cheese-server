@@ -33,11 +33,7 @@ export class ImgFolderController {
   @UseInterceptors(TransformInterceptor)
   @ApiCommonResponse(ImgFolderResponseDto)
   async create(@Body() dto: CreateFolderDto, @Request() req) {
-    return this.imgFolderService.create(
-      dto.name,
-      req.user.userId,
-      dto.parentId,
-    );
+    return this.imgFolderService.create(dto.name, req.user.sub, dto.parentId);
   }
 
   @Get('list')
@@ -46,8 +42,18 @@ export class ImgFolderController {
   @UseInterceptors(TransformInterceptor)
   @ApiCommonResponse(ImgFolderResponseDto, true)
   async list(@Query() dto: ListDto, @Request() req) {
-    const folderId = dto.folderId ? Number(dto.folderId) : undefined;
-    return this.imgFolderService.list(req.user.userId, folderId);
+    // 增加日志以调试参数传递
+    console.log('ImgFolderController.list raw query:', dto);
+    // 处理可能得空字符串或 'null' 字符串
+    let folderId: number | undefined;
+    if (dto.folderId !== undefined && dto.folderId !== null) {
+      const num = Number(dto.folderId);
+      if (!isNaN(num)) {
+        folderId = num;
+      }
+    }
+
+    return this.imgFolderService.list(req.user.sub, folderId);
   }
 
   @Get('tree')
@@ -56,7 +62,7 @@ export class ImgFolderController {
   @UseInterceptors(TransformInterceptor)
   @ApiCommonResponse(FolderTreeResponseDto, true)
   async getTree(@Request() req) {
-    return this.imgFolderService.getTree(req.user.userId);
+    return this.imgFolderService.getTree(req.user.sub);
   }
 
   @Post('update')
