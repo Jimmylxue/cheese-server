@@ -7,6 +7,7 @@ import { FileUploadModule } from 'src/modules/system/modules/fileUpload/fileUplo
 import { SiteLetterModule } from 'src/modules/system/modules/siteLetter/siteLetter.module';
 import { ThirdPlatformModule } from 'src/modules/thirdPlatform/thirdPlatform.module';
 import { WxModule } from 'src/modules/wx/wx.module';
+import { CheckinModule } from 'src/modules/biz/checkin/checkin.module';
 
 /**
  * 自动以暴露出 swagger 接口平台
@@ -71,5 +72,11 @@ export const platformConfigs = {
     description: '图床 接口',
     modules: [ImgCloudModule],
     path: 'platform/imgCloud',
+  },
+  checkin: {
+    title: 'Checkin API',
+    description: '签到 接口',
+    modules: [CheckinModule],
+    path: 'platform/checkin',
   },
 };
