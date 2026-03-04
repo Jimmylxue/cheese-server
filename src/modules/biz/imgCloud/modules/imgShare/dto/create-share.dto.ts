@@ -1,4 +1,4 @@
-import { IsEnum, IsInt } from 'class-validator';
+import { IsEnum, IsInt, IsOptional, IsString, Length } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { ShareType } from '../../../entities/imgShare.entity';
 
@@ -20,8 +20,14 @@ export class CreateShareDto {
 
   @ApiProperty({
     enum: ShareValidityPeriod,
-    description: 'Validity period in days (0 for permanent)',
+    description: 'Validity period in days (-1 for permanent)',
   })
-  @IsInt()
-  validity: number;
+  @IsEnum(ShareValidityPeriod)
+  validity: ShareValidityPeriod;
+
+  @ApiProperty({ description: 'Access code (optional)', required: false })
+  @IsOptional()
+  @IsString()
+  @Length(6, 6)
+  accessCode?: string;
 }

@@ -7,10 +7,10 @@ export const ApiCommonResponse = <TModel extends Type<any>>(
   isArray: boolean = false,
 ) => {
   const decorators = [ApiExtraModels(ApiResponseDto)];
-  
+
   if (model) {
     decorators.push(ApiExtraModels(model));
-    
+
     decorators.push(
       ApiOkResponse({
         schema: {

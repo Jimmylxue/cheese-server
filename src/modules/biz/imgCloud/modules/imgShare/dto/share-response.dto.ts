@@ -9,4 +9,7 @@ export class ShareResponseDto {
 
   @ApiProperty({ description: 'Expiration date', nullable: true })
   expireAt: Date | null;
+
+  @ApiProperty({ description: 'Access code', nullable: true })
+  accessCode: string | null;
 }

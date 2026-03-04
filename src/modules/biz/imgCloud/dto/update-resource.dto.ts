@@ -7,12 +7,21 @@ export class UpdateResourceDto {
   @IsNumber()
   id: number;
 
-  @ApiProperty({ description: 'New Filename', example: 'new_name.jpg', required: false })
+  @ApiProperty({
+    description: 'New Filename',
+    example: 'new_name.jpg',
+    required: false,
+  })
   @IsOptional()
   @IsString()
   filename?: string;
 
-  @ApiProperty({ description: 'New Folder ID', example: 1, required: false, nullable: true })
+  @ApiProperty({
+    description: 'New Folder ID',
+    example: 1,
+    required: false,
+    nullable: true,
+  })
   @IsOptional()
   @IsNumber()
   folderId?: number | null;

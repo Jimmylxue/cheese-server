@@ -1,6 +1,6 @@
 ---
 name: 'feature-to-code'
-description: '根据 Feature Markdown 生成 NestJS 代码、迁移、Swagger 和测试。在添加/更新 .feature.md 后调用，以生成或更新业务代码。'
+description: '根据 Feature Markdown 生成 NestJS 代码、迁移、Swagger 。在添加/更新 .feature.md 后调用，以生成或更新业务代码。'
 ---
 
 # Feature → Code (Markdown)
@@ -72,4 +72,4 @@ description: '根据 Feature Markdown 生成 NestJS 代码、迁移、Swagger �
 ## 注意事项
 
 - 保持 `.feature.md` 作为唯一真实来源；通过重新生成来更新代码。
-- 生成后，在提交前运行：lint、测试和迁移 dry-run。
+- 不需要执行测试相关的部分。`lint`，`jest` 相关的操作。

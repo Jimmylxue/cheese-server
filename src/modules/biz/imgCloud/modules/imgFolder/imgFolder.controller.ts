@@ -33,7 +33,11 @@ export class ImgFolderController {
   @UseInterceptors(TransformInterceptor)
   @ApiCommonResponse(ImgFolderResponseDto)
   async create(@Body() dto: CreateFolderDto, @Request() req) {
-    return this.imgFolderService.create(dto.name, req.user.sub, dto.parentId);
+    return this.imgFolderService.create(
+      dto.name,
+      req.user.userId,
+      dto.parentId,
+    );
   }
 
   @Get('list')

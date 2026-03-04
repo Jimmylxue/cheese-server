@@ -12,10 +12,21 @@ export class CheckinService {
     private checkinRepository: Repository<CheckinRecord>,
   ) {}
 
-  async sign(userId: number, createCheckinDto: CreateCheckinDto): Promise<CheckinResponseDto> {
+  async sign(
+    userId: number,
+    createCheckinDto: CreateCheckinDto,
+  ): Promise<CheckinResponseDto> {
     const now = new Date();
-    const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    const endOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+    const startOfDay = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate(),
+    );
+    const endOfDay = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate() + 1,
+    );
 
     // Check if already checked in today
     const existing = await this.checkinRepository.findOne({
@@ -41,8 +52,8 @@ export class CheckinService {
     return {
       id: saved.id,
       checkedAt: saved.checkedAt.toISOString(),
-      lat: saved.lat ? Number(saved.lat) : null,
-      lng: saved.lng ? Number(saved.lng) : null,
+      lat: saved.lat !== null ? Number(saved.lat) : null,
+      lng: saved.lng !== null ? Number(saved.lng) : null,
     };
   }
 }

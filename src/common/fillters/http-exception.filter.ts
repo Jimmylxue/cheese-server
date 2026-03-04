@@ -32,7 +32,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
         message = typedResponse.message || exception.message;
         code = typedResponse.code || status;
       } else {
-        message = exceptionResponse as string;
+        message = exceptionResponse;
       }
     } else if (exception instanceof Error) {
       message = exception.message;

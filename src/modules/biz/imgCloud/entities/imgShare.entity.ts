@@ -50,6 +50,15 @@ export class ImgShare {
   @Column({ type: 'timestamp', nullable: true, name: 'expire_at' })
   expireAt: Date | null;
 
+  @Column({ name: 'access_code', type: 'varchar', length: 64, nullable: true })
+  accessCode: string | null;
+
+  @Column({ name: 'is_delete', default: false })
+  isDelete: boolean;
+
+  @Column({ name: 'deleted_at', type: 'timestamp', nullable: true })
+  deletedAt: Date | null;
+
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 }
