@@ -10,6 +10,7 @@ import { RedisModule } from './modules/redis/redis.module';
 import { SystemModule } from './modules/system/system.module';
 import { BizModule } from './modules/biz/biz.module';
 import { ThirdPlatformModule } from './modules/thirdPlatform/thirdPlatform.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { ThirdPlatformModule } from './modules/thirdPlatform/thirdPlatform.modul
       },
     }),
     RedisModule,
+    ScheduleModule.forRoot(),
     WxModule,
     AuthModule,
     SystemModule,

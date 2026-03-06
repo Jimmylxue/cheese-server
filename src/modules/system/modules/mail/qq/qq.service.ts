@@ -15,6 +15,51 @@ export class QQNodeMailerService {
   ) {}
 
   /**
+   * 发送自定义HTML邮件
+   */
+  async sendHtml(params: { to: string; subject: string; html: string }) {
+    const appName = this.configService.get<string>('APP_NAME');
+    const { to, subject, html } = params;
+    return new Promise<boolean>((resolve) => {
+      const host = this.configService.get('QQ_MAIL_HOST');
+      const port = this.configService.get('QQ_MAIL_PORT');
+      const secure = Boolean(Number(this.configService.get('QQ_MAIL_SECURE')));
+      const user = this.configService.get('QQ_MAIL_USER');
+      const password = this.configService.get('QQ_MAIL_PASSWORD');
+      if (!user || !password || !to) {
+        resolve(false);
+        return;
+      }
+      nodemailer
+        .createTransport({
+          host,
+          port,
+          secure,
+          auth: {
+            user,
+            pass: password,
+          },
+        })
+        .sendMail(
+          {
+            from: `${appName} <${user}>`,
+            to,
+            subject,
+            html,
+          },
+          (err) => {
+            if (err) {
+              console.error(`邮件发送失败(${to})`, err);
+              resolve(false);
+              return;
+            }
+            resolve(true);
+          },
+        );
+    });
+  }
+
+  /**
    * 发送验证码
    *  会将码保存至redis
    */

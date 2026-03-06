@@ -11,5 +11,6 @@ import { UserModule } from 'src/modules/auth/modules/user.module';
   imports: [UserModule, TypeOrmModule.forFeature([SendRecord, Letter])],
   providers: [LetterService, SendLetterService],
   controllers: [SendLetterController],
+  exports: [LetterService, SendLetterService],
 })
 export class SendLetterModule {}
