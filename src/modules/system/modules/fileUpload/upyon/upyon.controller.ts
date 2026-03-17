@@ -2,18 +2,21 @@ import {
   Controller,
   Post,
   UploadedFile,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { AuthGuard } from 'src/modules/auth/guard/auth.guard';
 import * as upyun from 'upyun';
 
 // @UseGuards(AuthGuard('jwt'))
+@UseGuards(AuthGuard)
 @Controller('upyon')
 export class UpyonController {
   constructor(private readonly configService: ConfigService) {}
 
-  @Post('/')
+  @Post('upload')
   @UseInterceptors(FileInterceptor('file'))
   async uploadFile(@UploadedFile() file) {
     const service = new upyun.Service(
